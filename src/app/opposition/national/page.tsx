@@ -44,10 +44,12 @@ interface Candidate {
 
 interface NationalOppositionCandidate {
   id?: string;
-  ninNumber: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
+  OppositionCandidate: {
+    ninNumber: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+  };
   category?: string;
   region: string;
   subregion: string;
@@ -66,7 +68,6 @@ interface NationalOppositionCandidate {
 }
 
 const NationalOpposition = () => {
-//   const [updateNational] = useUpdateNationalMutation();
   const { data: nationalCandidates, refetch } = useGetNationalsQuery({});
   const { data: oppositionCandidates, refetch: refetchOpposition } =
     useGetNationalOppositionQuery();
@@ -78,7 +79,14 @@ const NationalOpposition = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newOppositionCandidate, setNewOppositionCandidate] = useState<
     Partial<NationalOppositionCandidate>
-  >({});
+  >({
+    OppositionCandidate: {
+      ninNumber: "",
+      firstName: "",
+      lastName: "",
+      phoneNumber: "",
+    },
+  });
   const [currentElectionType, setCurrentElectionType] = useState("");
   const [currentCategory, setCurrentCategory] = useState("");
 
@@ -161,14 +169,32 @@ const NationalOpposition = () => {
 
   const handleModalClose = () => {
     setIsModalOpen(false);
-    setNewOppositionCandidate({});
+    setNewOppositionCandidate({
+      OppositionCandidate: {
+        ninNumber: "",
+        firstName: "",
+        lastName: "",
+        phoneNumber: "",
+      },
+    });
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    field?: string
   ) => {
     const { name, value } = e.target;
-    setNewOppositionCandidate((prev) => ({ ...prev, [name]: value }));
+    if (field === 'OppositionCandidate') {
+      setNewOppositionCandidate((prev) => ({
+        ...prev,
+        OppositionCandidate: {
+          ...prev.OppositionCandidate,
+          [name]: value,
+        },
+      }));
+    } else {
+      setNewOppositionCandidate((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -363,17 +389,17 @@ const NationalOpposition = () => {
                   <tr key={candidate.id}>
                     <td className="px-3 py-2 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
-                        {candidate.firstName} {candidate.lastName}
+                        {candidate.OppositionCandidate.firstName} {candidate.OppositionCandidate.lastName}
                       </div>
                     </td>
                     <td className="px-3 py-2 whitespace-nowrap">
                       <div className="text-sm text-gray-500">
-                        {candidate.ninNumber}
+                        {candidate.OppositionCandidate.ninNumber}
                       </div>
                     </td>
                     <td className="px-3 py-2 whitespace-nowrap">
                       <div className="text-sm text-gray-500">
-                        {candidate.phoneNumber}
+                        {candidate.OppositionCandidate.phoneNumber}
                       </div>
                     </td>
                     <td className="px-3 py-2 whitespace-nowrap">
@@ -461,8 +487,8 @@ const NationalOpposition = () => {
                 type="text"
                 name="firstName"
                 placeholder="First Name"
-                value={newOppositionCandidate.firstName || ""}
-                onChange={handleInputChange}
+                value={newOppositionCandidate.OppositionCandidate?.firstName || ""}
+                onChange={(e) => handleInputChange(e, 'OppositionCandidate')}
                 className="w-full p-2 mb-2 border rounded"
                 required
               />
@@ -470,8 +496,8 @@ const NationalOpposition = () => {
                 type="text"
                 name="lastName"
                 placeholder="Last Name"
-                value={newOppositionCandidate.lastName || ""}
-                onChange={handleInputChange}
+                value={newOppositionCandidate.OppositionCandidate?.lastName || ""}
+                onChange={(e) => handleInputChange(e, 'OppositionCandidate')}
                 className="w-full p-2 mb-2 border rounded"
                 required
               />
@@ -479,8 +505,8 @@ const NationalOpposition = () => {
                 type="text"
                 name="ninNumber"
                 placeholder="NIN Number"
-                value={newOppositionCandidate.ninNumber || ""}
-                onChange={handleInputChange}
+                value={newOppositionCandidate.OppositionCandidate?.ninNumber || ""}
+                onChange={(e) => handleInputChange(e, 'OppositionCandidate')}
                 className="w-full p-2 mb-2 border rounded"
                 required
               />
@@ -488,8 +514,8 @@ const NationalOpposition = () => {
                 type="tel"
                 name="phoneNumber"
                 placeholder="Phone Number"
-                value={newOppositionCandidate.phoneNumber || ""}
-                onChange={handleInputChange}
+                value={newOppositionCandidate.OppositionCandidate?.phoneNumber || ""}
+                onChange={(e) => handleInputChange(e, 'OppositionCandidate')}
                 className="w-full p-2 mb-2 border rounded"
                 required
               />
@@ -498,7 +524,7 @@ const NationalOpposition = () => {
                 name="party"
                 placeholder="Party"
                 value={newOppositionCandidate.party || ""}
-                onChange={handleInputChange}
+                onChange={(e) => handleInputChange(e)}
                 className="w-full p-2 mb-2 border rounded"
                 required
               />
