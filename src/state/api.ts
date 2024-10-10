@@ -1161,60 +1161,43 @@ export const api = createApi({
 
 ///National opposition candidates
 
-
-getNationalOpposition: build.query<NationalOppositionCandidate[], void>({
-  query: () => 'electoral-positions/national-opposition-candidates',
-  providesTags: ['NationalOppositionCandidate'],
+getNationalOpposition: build.query({
+  query: () => "electoral-positions/national-opposition-candidates",
 }),
-updateNationalOpposition: build.mutation<NationalOppositionCandidate, Partial<NationalOppositionCandidate>>({
+addNationalOpposition: build.mutation({
   query: (candidate) => ({
-    url: `electoral-positions/national-opposition-candidates/${candidate.id}`,
-    method: 'PUT',
+    url: "electoral-positions/national-opposition-candidates",
+    method: "POST",
     body: candidate,
   }),
-  invalidatesTags: ['NationalOppositionCandidate'],
 }),
-addNationalOpposition: build.mutation<NationalOppositionCandidate, Partial<NationalOppositionCandidate>>({
-  query: (newCandidate) => ({
-    url: 'electoral-positions/national-opposition-candidates',
-    method: 'POST',
-    body: newCandidate,
+updateNationalOpposition: build.mutation({
+  query: (candidate) => ({
+    url: `electoral-positions/national-opposition-candidates/${candidate.id}`,
+    method: "PUT",
+    body: candidate,
   }),
-  invalidatesTags: ['NationalOppositionCandidate'],
 }),
-
-
-
-getNationalOppositionCandidates: build.query<NationalOppositionCandidate[], void>({
-  query: () => 'electoral-positions/national-opposition-candidates',
-  providesTags: ['NationalOppositionCandidate'],
-}),
-
-addNationalOppositionCandidate: build.mutation<NationalOppositionCandidate, Partial<NationalOppositionCandidate>>({
-  query: (newCandidate) => ({
-    url: 'electoral-positions/national-opposition-candidates',
-    method: 'POST',
-    body: newCandidate,
-  }),
-  invalidatesTags: ['NationalOppositionCandidate'],
-}),
-
-
-updateNationalOppositionCandidate: build.mutation<NationalOppositionCandidate, Partial<NationalOppositionCandidate>>({
-  query: (updatedCandidate) => ({
-    url: `electoral-positions/national-opposition-candidates/${updatedCandidate.id}`,
-    method: 'PUT',
-    body: updatedCandidate,
-  }),
-  invalidatesTags: ['NationalOppositionCandidate'],
-}),
-
-deleteNationalOppositionCandidate: build.mutation<void, string>({
+deleteNationalOpposition: build.mutation({
   query: (id) => ({
     url: `electoral-positions/national-opposition-candidates/${id}`,
-    method: 'DELETE',
+    method: "DELETE",
   }),
-  invalidatesTags: ['NationalOppositionCandidate'],
+}),
+
+addOppositionCandidate: build.mutation({
+  query: (candidate) => ({
+    url: "electoral-positions/opposition-candidates",
+    method: "POST",
+    body: candidate,
+  }),
+}),
+updateOppositionCandidate: build.mutation({
+  query: (candidate) => ({
+    url: `electoral-positions/opposition-candidates/${candidate.id}`,
+    method: "PUT",
+    body: candidate,
+  }),
 }),
 
 ///end opposition
@@ -1392,16 +1375,18 @@ export const {
   useDeleteWardPollingStationMutation,
 
   ///Opposition
-  useGetNationalOppositionCandidatesQuery,
-  useAddNationalOppositionCandidateMutation,
-  useUpdateNationalOppositionCandidateMutation,
-  useDeleteNationalOppositionCandidateMutation,
-
-
-
-  useGetNationalOppositionQuery,
-  useUpdateNationalOppositionMutation,
   useAddNationalOppositionMutation,
+  useUpdateNationalOppositionMutation,
+  useDeleteNationalOppositionMutation,
+  useGetNationalOppositionQuery,
+  useAddOppositionCandidateMutation,
+  useUpdateOppositionCandidateMutation,
+
+
+
+  // useGetNationalOppositionQuery,
+  // useUpdateNationalOppositionMutation,
+  // useAddNationalOppositionMutation,
 
   //end opposition
 

@@ -152,10 +152,10 @@ const National: React.FC = () => {
 
     // Add conditional required fields based on whether it's a city or not
     if (!hasCity) {
-      requiredFields.push("constituency", "subcounty", "parish");
-      if (electionType !== "presidential") {
-        requiredFields.push("village");
-      }
+      requiredFields.push("constituency", "subcounty", "parish", "village");
+      // if (electionType !== "presidential") {
+      //   requiredFields.push("village");
+      // }
     } else {
       requiredFields.push("municipality", "division", "ward", "cell");
     }
@@ -494,26 +494,24 @@ const National: React.FC = () => {
                   </option>
                 ))}
             </select>
-            {electionType !== "presidential" && (
-              <select
-                className="block w-full p-2 mt-2 border rounded-md shadow-sm focus:border-yellow-500"
-                name="village"
-                value={candidateData.village || ""}
-                onChange={handleInputChange}
-              >
-                <option value="">Select Village</option>
-                {villages
-                  ?.filter(
-                    (village: any) =>
-                      village.parishId === parseInt(candidateData.parish || "0")
-                  )
-                  .map((village: any) => (
-                    <option key={village.id} value={village.id}>
-                      {village.name}
-                    </option>
-                  ))}
-              </select>
-            )}
+            <select
+              className="block w-full p-2 mt-2 border rounded-md shadow-sm focus:border-yellow-500"
+              name="village"
+              value={candidateData.village || ""}
+              onChange={handleInputChange}
+            >
+              <option value="">Select Village</option>
+              {villages
+                ?.filter(
+                  (village: any) =>
+                    village.parishId === parseInt(candidateData.parish || "0")
+                )
+                .map((village: any) => (
+                  <option key={village.id} value={village.id}>
+                    {village.name}
+                  </option>
+                ))}
+            </select>
           </>
         )}
 
